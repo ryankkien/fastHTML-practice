@@ -2,7 +2,9 @@ from fasthtml.common import *
 
 app,rt = fast_app(live=True)
 
-@rt('/')
-def get(): return Div(P('Hello World!'), hx_get="/change")
+@rt('/') #router
+def get(): return Titled('Greeting',
+                         Div(P('Alive!!'), hx_get="/change")
+                         )#http req
 
 serve()
