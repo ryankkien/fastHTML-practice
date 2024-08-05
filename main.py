@@ -1,16 +1,24 @@
 from fasthtml.common import *
 
-app,rt,todos,Todo = fast_app('todosdb', live=True,
-                             id=int, title=str, done=bool, pk='id')
-
 def render(todo):
-    return Li(todo.title)
+    tid = todo.id
+    toggle = A('Toggle', hx_get=f'/toggle{todo.id}')
+    return Li(toggle, todo.title + ('w' if todo.done else ''))
+
+
+app,rt,todos,Todo = fast_app('todosdb', live=True, render=render,
+                             id=int, title=str, done=bool, pk='id')
 
 @rt('/')
 def get():
-    todos.insert(Todo(title="Second todo", done = False))
-    items = [Li(o) for o in todos()]
     return Titled('Todos',
                   Ul(*todos()),
                   )
-serve()
+    
+@rt('/toggle/{tid}')
+def get(tid):
+    todo = todos[tid]
+    todo.done = not todo.done
+    return get()
+
+serve() 
