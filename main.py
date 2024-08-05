@@ -4,7 +4,9 @@ app,rt = fast_app(live=True)
 
 @rt('/') #router
 #http req
-def get(): return Titled('Greeting',
+def get():
+    nums = Ul(*[Li(o) for o in range(10)])
+    return Titled('Greeting',
                          Div(P('Alive!!')),
                          P(A('Link', href = '/change'))
                          )
