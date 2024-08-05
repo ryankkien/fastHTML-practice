@@ -6,7 +6,7 @@ app,rt = fast_app(live=True)
 #http req
 def get():
     nums = createList(10)
-    return Titled('Greeting',
+    return Titled('Greeting', nums,
                          Div(P('Alive!!')),
                          P(A('Link', href = '/change'))
                          )
