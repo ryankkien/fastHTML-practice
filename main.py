@@ -1,19 +1,16 @@
 from fasthtml.common import *
 
-app,rt,todos,Todo = fast_app('todos.db', live=True, id =int, title=str, done=bool, pk = 'id') #sqLite
+app,rt,todos,Todo = fast_app('todosdb', live=True,
+                             id=int, title=str, done=bool, pk='id')
 
-@rt('/') #router
-#http req
+def render(todo):
+    return Li(todo.title)
+
+@rt('/')
 def get():
-    items = todos()
+    todos.insert(Todo(title="Second todo", done = False))
+    items = [Li(o) for o in todos()]
     return Titled('Todos',
-                  Div(*items),
+                  Ul(*todos()),
                   )
-
-def createList(n):
-    return Ul(*[Li(o) for o in range(n)])
-
-@rt('/change') #grabbed when link is clicked
-def get():
-    return Div(P('Changed!!'))
 serve()
