@@ -3,7 +3,8 @@ from fasthtml.common import *
 def render(todo):
     tid = f'todo-{todo.id}'
     toggle = A('Toggle', hx_get=f'/toggle/{todo.id}', target_id=tid)
-    return Li(toggle,
+    delete = A('Del', hx_delete=f'/{todo.id}', target_id=tid)
+    return Li(toggle, delete,
               todo.title + (' done' if todo.done else ''),
               id=tid)
     
@@ -23,4 +24,9 @@ def get(tid:int):
     todos.update(todo)
     return todo
 
+@rt('/{tid}')
+def delete(tid:int):
+    todos.delete(tid)
+    # return None #done automatically
+    
 serve()
