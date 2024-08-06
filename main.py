@@ -13,9 +13,17 @@ app,rt,todos,Todo = fast_app('todosdb', live=True, render=render,
 
 @rt('/')
 def get():
+    frm = Form(Group(Input(placeholder='add a new todo', name = 'title'), Button("Add")),
+               hx_post = '/', target_id = 'todo-list', hx_swap = 'beforeend')
     return Titled('Todos',
-                  Ul(*todos()),
+                  Card(
+                        Ul(*todos(), id='todo-list'),
+                        header=frm),
                   )
+
+@rt('/')
+def post(todo:Todo): return todos.insert(todo)
+    
     
 @rt('/toggle/{tid}')
 def get(tid:int):
